@@ -12,7 +12,7 @@ const char *const g_code = R"(
         System:print("this is when setup will happen")
     end
     function _update()
-        Graphics:clear()
+        --Graphics:clear()
         if Input:is_physical_key_pressed(KEY_PHYS_DOWN) == true then
             pos.x = pos.y + 1
         elseif Input:is_physical_key_pressed(KEY_PHYS_UP) == true then
@@ -24,7 +24,8 @@ const char *const g_code = R"(
             pos.x = pos.x - 1
         end
         Graphics:draw_point(pos,Color(255,255,0))
-        
+        Graphics:draw_rect(Vector2(50,50),Vector2(50,50),Color(255,0,0))
+         Graphics:draw_circle(Vector2(60,150),10,Color(0,0,255))
     end
 )";
 int main(int, char **)
