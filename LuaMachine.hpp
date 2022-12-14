@@ -17,8 +17,9 @@ public:
     LuaMachine()
     {
         m_lua = luaL_newstate();
+        luaL_openlibs(m_lua);
         // enable tables
-        lua_pushcfunction(m_lua, luaopen_table);
+        /*lua_pushcfunction(m_lua, luaopen_table);
         lua_pushliteral(m_lua, LUA_TABLIBNAME);
         lua_call(m_lua, 1, 0);
         // enable lua
@@ -33,6 +34,10 @@ public:
         lua_pushcfunction(m_lua, luaopen_math);
         lua_pushliteral(m_lua, LUA_MATHLIBNAME);
         lua_call(m_lua, 1, 0);
+        // enable io
+        lua_pushcfunction(m_lua, luaopen_io);
+        lua_pushliteral(m_lua, LUA_IOLIBNAME);
+        lua_call(m_lua, 1, 0);*/
     }
     /// @brief Get raw lua state
     /// @return

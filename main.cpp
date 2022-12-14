@@ -32,7 +32,7 @@ const char *const g_code = R"(
 int main(int, char **)
 {
     Window win(600, 600);
-    win.run(g_code);
+    win.run();
 
     return EXIT_FAILURE;
 }

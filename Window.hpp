@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <memory>
 #include <chrono>
+#include <fstream>
+#include <sstream>
 #include "LuaMachine.hpp"
 #include "Log.hpp"
 #include "Video.hpp"
@@ -35,12 +37,9 @@ public:
     }
 
     /// @brief Starts the game loop
-    void run(const char *code)
+    void run()
     {
-        if (!m_lua->loadCode(code) && m_lua->call("_init"))
-        {
-            return;
-        }
+        loadProject();
         while (m_running)
         {
             handleEvents();
@@ -70,6 +69,36 @@ private:
     /// @brief Last time when clock was updated
     std::chrono::high_resolution_clock m_tick;
 
+    bool loadProject()
+    {
+        std::ifstream file("project.lua");
+        if (!file.is_open())
+        {
+            Log::error("Failed to open project");
+            return false;
+        }
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        LuaMachine projectConfig;
+        std::string deb = buffer.str();
+        projectConfig.loadCode(buffer.str().c_str());
+        luabridge::LuaRef fileRef = luabridge::getGlobal(projectConfig.getState(), "main_file");
+        if (!fileRef.isString())
+        {
+            return false;
+        }
+        const char *code = fileRef.cast<const char *>();
+        std::ifstream codeFile(code);
+        if (!file.is_open())
+        {
+            Log::error("Failed to main file");
+            return false;
+        }
+        std::stringstream codeBuffer;
+        codeBuffer << codeFile.rdbuf();
+        return !m_lua->loadCode(codeBuffer.str().c_str()) && m_lua->call("_init");
+    }
+
     void clearScreen()
     {
         m_video->clear();
@@ -82,7 +111,10 @@ private:
 
     void updateLua()
     {
-        m_lua->call("_update");
+        if (!m_lua->call("_update"))
+        {
+            m_running = false;
+        }
     }
 
     void handleEvents()
