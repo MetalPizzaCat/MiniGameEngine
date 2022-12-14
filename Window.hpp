@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include <SDL2/SDL.h>
+#include <SDL2_framerate.h>
 #include <memory>
 #include <chrono>
 #include <fstream>
@@ -34,18 +35,23 @@ public:
         }
         m_lua = std::make_unique<LuaMachine>();
         bindLuaObjects();
+        SDL_initFramerate(&m_fps);
     }
 
     /// @brief Starts the game loop
     void run()
     {
         loadProject();
+        m_lastUpdate = std::clock();
         while (m_running)
         {
             handleEvents();
             clearScreen();
             updateLua();
             render();
+            SDL_framerateDelay(&m_fps);
+            m_delta =  (((float)(std::clock() - m_lastUpdate)) / CLOCKS_PER_SEC) * 1000.f;
+            m_lastUpdate = std::clock();
         }
     }
 
@@ -66,8 +72,11 @@ private:
     Video *m_video;
     System m_system;
     Input m_input;
-    /// @brief Last time when clock was updated
-    std::chrono::high_resolution_clock m_tick;
+    FPSmanager m_fps;
+    /// @brief Amount of time passed since last frame. Default value is just random non zero value
+    float m_delta = 0.000717;
+
+    clock_t m_lastUpdate;
 
     bool loadProject()
     {
@@ -111,7 +120,7 @@ private:
 
     void updateLua()
     {
-        if (!m_lua->call("_update"))
+        if (!m_lua->call("_update", m_delta))
         {
             m_running = false;
         }

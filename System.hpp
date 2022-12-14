@@ -15,9 +15,6 @@ struct SystemState
     size_t mouseX;
     size_t mouseY;
 
-    size_t graphicsWidth;
-    size_t graphicsHeight;
-
     int32_t lastPressedKey;
 };
 
@@ -31,7 +28,6 @@ public:
         m_output.emplace_back(text);
         Log::error(text);
     }
-
     static void bindLua(lua_State *state);
 
 private:

@@ -5,6 +5,7 @@
 #include <lauxlib.h>
 
 #include <LuaBridge/LuaBridge.h>
+#include "Log.hpp"
 
 static const luaL_Reg luaLibs[] = {
     {"", luaopen_base},
@@ -43,10 +44,26 @@ public:
     /// @return
     lua_State *getState() { return m_lua; }
 
-    /// @brief Call a lua function with no arguments or results
-    /// @param name
+    /// @brief Call a lua function, ignoring the return result
+    /// @param name name of the function
     /// @return true if execution was successful
-    bool call(const char *name);
+    template <typename... Args>
+    bool call(const char *name, Args... args)
+    {
+        luabridge::LuaRef fn = luabridge::getGlobal(m_lua,name);
+        if (fn.isNil())
+        {
+            Log::error(std::string("Unable to find function with name") + name);
+            return false;
+        }
+        if (!fn.isFunction())
+        {
+            Log::error(std::string("Object") + name + "is not a function");
+            return false;
+        }
+        fn(args...);
+        return true;
+    }
 
     /// @brief Loads and executes lua code
     /// @param code
