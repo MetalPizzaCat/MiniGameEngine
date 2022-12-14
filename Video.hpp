@@ -27,6 +27,7 @@ public:
     void drawCircle(Vector2 const &pos, size_t radius, Color const &color);
 
     void clear();
+    static void bindLua(lua_State *state);
 
     SDL_Renderer *getRenderer() { return m_renderer; }
     size_t getWidth() const { return m_width; }
@@ -43,8 +44,3 @@ private:
     SDL_Renderer *m_renderer;
     SDL_Texture *m_vgaTexture;
 };
-
-namespace LuaBind
-{
-    void bindVideo(lua_State *state);
-}

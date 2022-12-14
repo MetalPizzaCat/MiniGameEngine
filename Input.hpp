@@ -34,6 +34,8 @@ public:
         m_virtualKeys[key.sym] = state;
     }
 
+    static void bindInput(lua_State *state);
+
 private:
     std::map<int32_t, bool> m_physicalKeys;
     std::map<int32_t, bool> m_virtualKeys;
@@ -43,25 +45,5 @@ private:
 
 namespace LuaBind
 {
-    void bindInput(lua_State *state)
-    {
-        luabridge::getGlobalNamespace(state)
-            .beginClass<Input>("Input")
-            .addFunction("is_key_pressed", &Input::isKeyPressed)
-            .addFunction("is_physical_key_pressed", &Input::isPhysicalKeyPressed)
-            .addFunction("is_input_pressed", &Input::isInputPressed)
-            .endClass();
-    }
-
-    void bindKeys(lua_State *state)
-    {
-        luabridge::push(state, (int32_t)SDL_SCANCODE_UP);
-        lua_setglobal(state, "KEY_PHYS_UP");
-        luabridge::push(state, (int32_t)SDL_SCANCODE_DOWN);
-        lua_setglobal(state, "KEY_PHYS_DOWN");
-        luabridge::push(state, (int32_t)SDL_SCANCODE_LEFT);
-        lua_setglobal(state, "KEY_PHYS_LEFT");
-        luabridge::push(state, (int32_t)SDL_SCANCODE_RIGHT);
-        lua_setglobal(state, "KEY_PHYS_RIGHT");
-    }
+    void bindKeys(lua_State *state);
 }

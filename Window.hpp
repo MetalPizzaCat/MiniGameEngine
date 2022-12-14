@@ -107,11 +107,11 @@ private:
 
     void bindLuaObjects()
     {
-        LuaBind::bindColor(m_lua->getState());
-        LuaBind::bindVector(m_lua->getState());
-        LuaBind::bindVideo(m_lua->getState());
-        LuaBind::bindSystem(m_lua->getState());
-        LuaBind::bindInput(m_lua->getState());
+        Color::bindLua(m_lua->getState());
+        Vector2::bindLua(m_lua->getState());
+        Video::bindLua(m_lua->getState());
+        System::bindLua(m_lua->getState());
+        Input::bindInput(m_lua->getState());
         LuaBind::bindKeys(m_lua->getState());
         luabridge::push(m_lua->getState(), m_video);
         lua_setglobal(m_lua->getState(), "Graphics");

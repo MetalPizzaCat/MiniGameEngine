@@ -18,6 +18,7 @@ add_executable(nema-video
     Window.hpp
     Window.cpp
     Log.hpp
+    Log.cpp
     LuaMachine.hpp 
     LuaMachine.cpp
     Video.hpp

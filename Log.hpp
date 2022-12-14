@@ -1,9 +1,6 @@
 #pragma once
-
+#include <string>
 namespace Log
 {
-    void error(std::string error)
-    {
-        std::cout << "Error: " << error << std::endl;
-    }
+    void error(std::string error);
 }

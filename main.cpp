@@ -24,8 +24,9 @@ const char *const g_code = R"(
             pos.x = pos.x - 1
         end
         Graphics:draw_point(pos,Color(255,255,0))
-        Graphics:draw_rect(Vector2(50,50),Vector2(50,50),Color(255,0,0))
-         Graphics:draw_circle(Vector2(60,150),10,Color(0,0,255))
+        Graphics:draw_rect(Vector2(50,0),Vector2(50,50),Color(255,0,0))
+        Graphics:draw_rect(Vector2(50,50),Vector2(Graphics.screen_width,50),Color(255,0,0))
+        Graphics:draw_circle(Vector2(60,150),10,Color(0,0,255))
     end
 )";
 int main(int, char **)

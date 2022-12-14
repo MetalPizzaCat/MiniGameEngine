@@ -1,6 +1,6 @@
 #include "Vector.hpp"
 
-void LuaBind::bindVector(lua_State *state)
+void Vector2::bindLua(lua_State *state)
 {
     luabridge::getGlobalNamespace(state)
         .beginClass<Vector2>("Vector2")

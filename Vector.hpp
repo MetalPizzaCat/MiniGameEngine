@@ -11,9 +11,6 @@ struct Vector2
     float y;
 
     Vector2(float x, float y) : x(x), y(y) {}
-};
 
-namespace LuaBind
-{
-    void bindVector(lua_State *state);
-}
+    static void bindLua(lua_State *state);
+};

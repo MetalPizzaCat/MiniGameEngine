@@ -32,18 +32,9 @@ public:
         Log::error(text);
     }
 
+    static void bindLua(lua_State *state);
+
 private:
     /// @brief Current screen output
     std::vector<std::string> m_output;
 };
-
-namespace LuaBind
-{
-    void bindSystem(lua_State *state)
-    {
-        luabridge::getGlobalNamespace(state)
-            .beginClass<System>("System")
-            .addFunction("print", &System::print)
-            .endClass();
-    }
-}

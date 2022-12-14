@@ -1,6 +1,6 @@
 #include "Color.hpp"
 
-void LuaBind::bindColor(lua_State *state)
+void Color::bindLua(lua_State *state)
 {
     luabridge::getGlobalNamespace(state)
         .beginClass<Color>("Color")

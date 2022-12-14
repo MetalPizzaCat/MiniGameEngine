@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <SDL2/SDL2_gfxPrimitives.h>
 
-void LuaBind::bindVideo(lua_State *state)
+void Video::bindLua(lua_State *state)
 {
     luabridge::getGlobalNamespace(state)
         .beginClass<Video>("Video")
@@ -10,8 +10,8 @@ void LuaBind::bindVideo(lua_State *state)
         .addFunction("draw_rect", &Video::drawRect)
         .addFunction("draw_circle", &Video::drawCircle)
         .addFunction("clear", &Video::clear)
-        //.addProperty("ScreenWidth", &Video::getWidth, false)
-        //.addProperty("ScreenHeight", &Video::getHeight, false)
+        .addProperty("screen_width", &Video::m_width, false)
+        .addProperty("screen_height", &Video::m_height, false)
         .endClass();
 }
 
