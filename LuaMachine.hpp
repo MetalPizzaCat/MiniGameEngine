@@ -50,7 +50,7 @@ public:
     template <typename... Args>
     bool call(const char *name, Args... args)
     {
-        luabridge::LuaRef fn = luabridge::getGlobal(m_lua,name);
+        luabridge::LuaRef fn = luabridge::getGlobal(m_lua, name);
         if (fn.isNil())
         {
             Log::error(std::string("Unable to find function with name") + name);

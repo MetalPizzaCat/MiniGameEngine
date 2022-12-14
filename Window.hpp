@@ -36,6 +36,10 @@ public:
         m_lua = std::make_unique<LuaMachine>();
         bindLuaObjects();
         SDL_initFramerate(&m_fps);
+
+        std::ofstream ofs;
+        ofs.open("log.txt", std::ofstream::out | std::ofstream::trunc);
+        ofs.close();
     }
 
     /// @brief Starts the game loop
@@ -50,7 +54,7 @@ public:
             updateLua();
             render();
             SDL_framerateDelay(&m_fps);
-            m_delta =  (((float)(std::clock() - m_lastUpdate)) / CLOCKS_PER_SEC) * 1000.f;
+            m_delta = (((float)(std::clock() - m_lastUpdate)) / CLOCKS_PER_SEC) * 1000.f;
             m_lastUpdate = std::clock();
         }
     }
@@ -154,6 +158,7 @@ private:
         System::bindLua(m_lua->getState());
         Input::bindInput(m_lua->getState());
         LuaBind::bindKeys(m_lua->getState());
+        Log::bindLua(m_lua->getState());
         luabridge::push(m_lua->getState(), m_video);
         lua_setglobal(m_lua->getState(), "Graphics");
         luabridge::push(m_lua->getState(), &m_system);
