@@ -1,6 +1,7 @@
 #include "Video.hpp"
 #include <algorithm>
 #include <SDL2/SDL2_gfxPrimitives.h>
+#include <fmt/core.h>
 #include "../Log.hpp"
 
 void Video::bindLua(lua_State *state)
@@ -65,7 +66,10 @@ void Video::drawTexture(Vector2 const &pos, Vector2 const &size, TextureResource
         Log::error("Attempted to draw null texture");
         return;
     }
-    SDL_RenderCopyF(m_renderer, tex->getTexture()->getTexture(), nullptr, &rect);
+    if (SDL_RenderCopyF(m_renderer, tex->getTexture()->getTexture(), nullptr, &rect) == -1)
+    {
+        Log::error(fmt::format("Failed to render texture : {}",SDL_GetError()));
+    }
 }
 
 void Video::clear()
