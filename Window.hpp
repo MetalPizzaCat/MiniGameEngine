@@ -7,11 +7,11 @@
 #include <chrono>
 #include <fstream>
 #include <sstream>
-#include "LuaMachine.hpp"
+#include "Lua/LuaMachine.hpp"
 #include "Log.hpp"
-#include "Video.hpp"
-#include "System.hpp"
-#include "Input.hpp"
+#include "Graphics/Video.hpp"
+#include "System/System.hpp"
+#include "System/Input.hpp"
 
 /// @brief Class that handles SDL window and communication between parts of software
 class Window

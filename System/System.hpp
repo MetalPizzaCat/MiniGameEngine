@@ -8,7 +8,7 @@
 #include <lauxlib.h>
 #include <LuaBridge/LuaBridge.h>
 
-#include "Log.hpp"
+#include "../Log.hpp"
 
 struct SystemState
 {

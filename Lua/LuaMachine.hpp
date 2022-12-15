@@ -5,7 +5,7 @@
 #include <lauxlib.h>
 
 #include <LuaBridge/LuaBridge.h>
-#include "Log.hpp"
+#include "../Log.hpp"
 
 /// @brief Wrapper around lua_State that handles lua state and function calls
 class LuaMachine
