@@ -61,14 +61,14 @@ void Video::drawTexture(Vector2 const &pos, Vector2 const &size, TextureResource
 {
     SDL_FRect rect{.x = pos.x, .y = pos.y, .w = size.x, .h = size.y};
     SDL_Rect srcRect{.x = 0, .y = 0, .w = 32, .h = 32};
-    if (tex->getTexture() == nullptr || tex->getTexture()->getTexture() == nullptr)
+    if (tex == nullptr || tex->getTexture() == nullptr || tex->getTexture()->getTexture() == nullptr)
     {
         Log::error("Attempted to draw null texture");
         return;
     }
     if (SDL_RenderCopyF(m_renderer, tex->getTexture()->getTexture(), nullptr, &rect) == -1)
     {
-        Log::error(fmt::format("Failed to render texture : {}",SDL_GetError()));
+        Log::error(fmt::format("Failed to render texture : {}", SDL_GetError()));
     }
 }
 

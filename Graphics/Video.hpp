@@ -15,7 +15,7 @@ class Video
 public:
     Video(size_t width, size_t height, SDL_Renderer *renderer) : m_width(width), m_height(height), m_renderer(renderer)
     {
-        m_vgaTexture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBX8888, SDL_TEXTUREACCESS_TARGET, width, height);
+        m_vgaTexture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
         SDL_SetRenderTarget(renderer, m_vgaTexture);
     }
 
