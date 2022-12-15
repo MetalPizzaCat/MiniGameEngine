@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include "Color.hpp"
 #include "Vector.hpp"
+#include "../Content/TextureResource.hpp"
 
 using byte = unsigned char;
 
@@ -46,11 +47,15 @@ public:
     /// @param color Color
     void drawLine(Vector2 const &a, Vector2 const &b, Color const &color);
 
+    /// @brief Draws texture at given coords
+    /// @param pos Location
+    void drawTexture(Vector2 const &pos, Vector2 const &size, TextureResource *tex);
+
     /// @brief Clears the screen with black color
     void clear();
 
     /// @brief Bind Video class to lua state to make it accessible
-    /// @param state 
+    /// @param state
     static void bindLua(lua_State *state);
 
     SDL_Renderer *getRenderer() { return m_renderer; }

@@ -3,6 +3,9 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2_framerate.h>
+#include <SDL2/SDL_image.h>
+#include <fmt/core.h>
+
 #include <memory>
 #include <chrono>
 #include <fstream>
@@ -12,13 +15,14 @@
 #include "Graphics/Video.hpp"
 #include "System/System.hpp"
 #include "System/Input.hpp"
+#include "Content/ContentManager.hpp"
 
 /// @brief Class that handles SDL window and communication between parts of software
 class Window
 {
 public:
-    static const size_t canvasWidth = 256;
-    static const size_t canvasHeight = 256;
+    static const size_t canvasWidth = 1024;
+    static const size_t canvasHeight = 1024;
     Window(int32_t width, int32_t height) : m_width(width),
                                             m_height(height),
                                             m_running(true)
@@ -26,7 +30,7 @@ public:
     {
         m_window = SDL_CreateWindow("Nema-Video v0.0.1", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
 
-        m_video = new Video(canvasWidth, canvasHeight, SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED));
+        m_video = new Video(canvasWidth, canvasHeight, SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RendererFlags::SDL_RENDERER_PRESENTVSYNC));
 
         if (!m_window || !m_video->getRenderer())
         {
@@ -40,6 +44,12 @@ public:
         std::ofstream ofs;
         ofs.open("log.txt", std::ofstream::out | std::ofstream::trunc);
         ofs.close();
+        m_manager.setRenderer(m_video->getRenderer());
+        int result = IMG_Init(IMG_INIT_PNG);
+        if (!(result == IMG_INIT_PNG))
+        {
+            Log::error(fmt::format("Failed to init SDL2_Image: {}", IMG_GetError()));
+        }
     }
 
     /// @brief Starts the game loop
@@ -50,6 +60,8 @@ public:
     ~Window()
     {
         SDL_DestroyWindow(m_window);
+        SDL_Quit();
+        IMG_Quit();
         delete m_video;
     }
 
@@ -65,6 +77,7 @@ private:
     System m_system;
     Input m_input;
     FPSmanager m_fps;
+    ContentManager m_manager;
     /// @brief Amount of time passed since last frame. Default value is just random non zero value
     float m_delta = 0.000717;
     /// @brief Clock fo storing last time when update happened
@@ -76,7 +89,7 @@ private:
 
     /// @brief Clears current screen
     void clearScreen();
-    
+
     /// @brief Render everything to the screen
     void render();
 

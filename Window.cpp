@@ -109,10 +109,14 @@ void Window::bindLuaObjects()
     Input::bindInput(m_lua->getState());
     LuaBind::bindKeys(m_lua->getState());
     Log::bindLua(m_lua->getState());
+    ContentManager::bindLua(m_lua->getState());
+    TextureResource::bindLua(m_lua->getState());
     luabridge::push(m_lua->getState(), m_video);
     lua_setglobal(m_lua->getState(), "Graphics");
     luabridge::push(m_lua->getState(), &m_system);
     lua_setglobal(m_lua->getState(), "System");
     luabridge::push(m_lua->getState(), &m_input);
     lua_setglobal(m_lua->getState(), "Input");
+    luabridge::push(m_lua->getState(), &m_manager);
+    lua_setglobal(m_lua->getState(), "ContentManager");
 }

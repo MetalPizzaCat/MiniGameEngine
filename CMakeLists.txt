@@ -42,6 +42,10 @@ add_executable(MiniGameEngine
     System/Input.cpp
     Graphics/Texture.hpp
     Graphics/Texture.cpp
+    Content/ContentManager.hpp
+    Content/ContentManager.cpp
+    Content/TextureResource.hpp
+    Content/TextureResource.cpp
     )
 
 target_link_libraries(MiniGameEngine  PRIVATE LuaBridge SDL2_image SDL2_gfx lua dl fmt::fmt ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
