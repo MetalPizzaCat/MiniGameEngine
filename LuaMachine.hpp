@@ -7,10 +7,7 @@
 #include <LuaBridge/LuaBridge.h>
 #include "Log.hpp"
 
-static const luaL_Reg luaLibs[] = {
-    {"", luaopen_base},
-    {nullptr, nullptr}};
-
+/// @brief Wrapper around lua_State that handles lua state and function calls
 class LuaMachine
 {
 public:
@@ -65,13 +62,13 @@ public:
         return true;
     }
 
-    /// @brief Loads and executes lua code
-    /// @param code
+    /// @brief Load chunk of lua code and execute it immediately 
+    /// @param code Text for the code
+    /// @return True is code was successfully loaded and executed
     bool loadCode(const char *code);
 
     ~LuaMachine()
     {
-        std::cout << "Closing machine" << std::endl;
         lua_close(m_lua);
     }
 

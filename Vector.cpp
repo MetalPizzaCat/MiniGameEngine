@@ -11,6 +11,8 @@ void Vector2::bindLua(lua_State *state)
         .addFunction("len", &Vector2::length)
         .addFunction("normalized", &Vector2::normalize)
         .addFunction("__add", &Vector2::add)
+        .addFunction("__sub", &Vector2::sub)
+        .addFunction("__mul", &Vector2::mul)
         .addFunction("__tostring", &Vector2::toString)
         .addConstructor<void (*)(float, float)>()
         .endClass();
@@ -35,7 +37,17 @@ std::string Vector2::toString()
     return fmt::format("x: {}, y: {}", x, y);
 }
 
-Vector2 Vector2::add(Vector2 b)
+Vector2 Vector2::add(Vector2 const &b)
 {
     return Vector2(x + b.x, y + b.y);
+}
+
+Vector2 Vector2::sub(Vector2 const &b)
+{
+    return Vector2(x - b.x, y - b.y);
+}
+
+Vector2 Vector2::mul(float b)
+{
+    return Vector2(x * b, y * b);
 }
