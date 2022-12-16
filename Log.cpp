@@ -2,7 +2,6 @@
 
 #include "Log.hpp"
 #include <iostream>
-#include <fmt/core.h>
 #include <fmt/color.h>
 
 #ifdef MINI_ENGINE_LOG_FILE

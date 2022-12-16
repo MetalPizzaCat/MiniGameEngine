@@ -1,4 +1,5 @@
 #include "Window.hpp"
+#include "Graphics/Text.hpp"
 
 bool Window::loadProject()
 {
@@ -108,6 +109,7 @@ void Window::bindLuaObjects()
     System::bindLua(m_lua->getState());
     Input::bindInput(m_lua->getState());
     LuaBind::bindKeys(m_lua->getState());
+    Text::bindLua(m_lua->getState());
     Log::bindLua(m_lua->getState());
     ContentManager::bindLua(m_lua->getState());
     TextureResource::bindLua(m_lua->getState());

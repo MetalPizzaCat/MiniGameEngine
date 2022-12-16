@@ -13,6 +13,7 @@ void Video::bindLua(lua_State *state)
         .addFunction("draw_circle", &Video::drawCircle)
         .addFunction("draw_line", &Video::drawLine)
         .addFunction("draw_texture", &Video::drawTexture)
+        .addFunction("draw_text", &Video::drawText)
         .addFunction("clear", &Video::clear)
         .addProperty("screen_width", &Video::m_width, false)
         .addProperty("screen_height", &Video::m_height, false)
@@ -70,6 +71,45 @@ void Video::drawTexture(Vector2 const &pos, Vector2 const &size, TextureResource
     {
         Log::error(fmt::format("Failed to render texture : {}", SDL_GetError()));
     }
+}
+
+void Video::drawTextureRaw(Vector2 const &pos, Vector2 const &size, SDL_Texture *texture)
+{
+    SDL_FRect rect{.x = pos.x, .y = pos.y, .w = size.x, .h = size.y};
+    if (texture == nullptr)
+    {
+        Log::error("Attempted to draw null texture");
+        return;
+    }
+    if (SDL_RenderCopyF(m_renderer, texture, nullptr, &rect) == -1)
+    {
+        Log::error(fmt::format("Failed to render texture : {}", SDL_GetError()));
+    }
+}
+
+void Video::drawText(Vector2 const &pos, std::string const &text, Color const &color)
+{
+    SDL_Surface *textSurf = TTF_RenderText_Solid(m_defaultFont, text.c_str(), SDL_Color{.r = color.r, .g = color.g, .b = color.b, .a = SDL_ALPHA_OPAQUE});
+    if (textSurf == nullptr)
+    {
+        Log::error(fmt::format("Unable to create text texture: {}", TTF_GetError()));
+        return;
+    }
+    SDL_Texture *tex = SDL_CreateTextureFromSurface(m_renderer, textSurf);
+    if (tex == nullptr)
+    {
+        Log::error(fmt::format("Unable to create text texture: {}", SDL_GetError()));
+        return;
+    }
+
+    SDL_FRect rect{.x = pos.x, .y = pos.y, .w = textSurf->w, .h = textSurf->h};
+    if (SDL_RenderCopyF(m_renderer, tex, nullptr, &rect) == -1)
+    {
+        Log::error(fmt::format("Failed to render text : {}", SDL_GetError()));
+        return;
+    }
+    SDL_FreeSurface(textSurf);
+    SDL_DestroyTexture(tex);
 }
 
 void Video::clear()

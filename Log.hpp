@@ -4,6 +4,8 @@
 #include <lualib.h>
 #include <lauxlib.h>
 
+#include <fmt/core.h>
+
 #include <LuaBridge/LuaBridge.h>
 namespace Log
 {

@@ -31,8 +31,15 @@ const char *const g_code = R"(
 )";
 int main(int, char **)
 {
-    Window win(600, 600);
-    win.run();
-
-    return EXIT_FAILURE;
+    try
+    {
+        Window win(600, 600);
+        win.run();
+        return EXIT_SUCCESS;
+    }
+    catch (std::exception e)
+    {
+        Log::error(e.what());
+        return EXIT_FAILURE;
+    }
 }

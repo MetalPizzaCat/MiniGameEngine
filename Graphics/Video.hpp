@@ -3,13 +3,15 @@
 #include <memory>
 #include <string.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include "Color.hpp"
 #include "Vector.hpp"
+#include "../Log.hpp"
 #include "../Content/TextureResource.hpp"
 
 using byte = unsigned char;
 
-/// @brief Class that handles all of the graphics interactions
+/// @brief Class that handles all of the graphics interactions as well as provides helper draw functions
 class Video
 {
 public:
@@ -17,6 +19,18 @@ public:
     {
         m_vgaTexture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
         SDL_SetRenderTarget(renderer, m_vgaTexture);
+
+        if (TTF_Init() == -1)
+        {
+            Log::error(fmt::format("Failed to init SDL2_ttf,{}", TTF_GetError()));
+            throw std::exception();
+        }
+        m_defaultFont = TTF_OpenFont(fmt::format("Fonts/{}", DEFAULT_FONT_NAME).c_str(), DEFAULT_FONT_SIZE);
+        if (m_defaultFont == nullptr)
+        {
+            Log::error(fmt::format("Unable to load default font: {}", TTF_GetError()));
+            throw std::exception();
+        }
     }
 
     /// @brief Draw contents of the buffer to the screen
@@ -51,6 +65,16 @@ public:
     /// @param pos Location
     void drawTexture(Vector2 const &pos, Vector2 const &size, TextureResource *tex);
 
+    /// @brief Draw raw sdl texture to the screen
+    void drawTextureRaw(Vector2 const &pos, Vector2 const &size, SDL_Texture *texture);
+
+    /// @brief Draws text at given coordinates. This is meant more for debug purposes
+    /// @param pos
+    /// @param text
+    void drawText(Vector2 const &pos, std::string const &text, Color const &color);
+
+    TTF_Font *getDefaultFont() { return m_defaultFont; }
+
     /// @brief Clears the screen with black color
     void clear();
 
@@ -72,4 +96,5 @@ private:
     size_t m_height;
     SDL_Renderer *m_renderer;
     SDL_Texture *m_vgaTexture;
+    TTF_Font *m_defaultFont;
 };
