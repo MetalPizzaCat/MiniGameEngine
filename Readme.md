@@ -26,6 +26,9 @@ All of the engine dependencies must be installed. Building the engine just requi
 ## Running projects
 * Create file `project.lua` in the same folder as the executable
 * Add `main_file = "FILENAME"` line to the file where FILENAME is path to the main lua file of the project
+### Notes about projects
+* Main lua file must have `_update` and `_init` functions
+* `Graphics`,`Input` and `ContentManager` are singletons that are created from c++ code even before project code gets loaded. They are objects that directly interact with underlying systems and only expose some functionality to Lua. Creating a copy of them will lead to undefined behavior/
 
 ## Documentation
 Coming soon, probably :)
