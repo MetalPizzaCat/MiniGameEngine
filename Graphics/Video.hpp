@@ -49,11 +49,13 @@ public:
     /// @param color Color
     void drawRect(Vector2 const &pos, Vector2 const &size, Color const &color);
 
+#ifdef USE_SDL2_GFX
     /// @brief Draw a filled circle
     /// @param pos Location
     /// @param radius Radius of the circle
     /// @param color Color
     void drawCircle(Vector2 const &pos, size_t radius, Color const &color);
+#endif
 
     /// @brief Draws a line from point A to point B
     /// @param a Start location

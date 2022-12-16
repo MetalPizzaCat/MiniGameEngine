@@ -1,6 +1,8 @@
 #include "Video.hpp"
 #include <algorithm>
+#ifdef USE_SDL2_GFX
 #include <SDL2/SDL2_gfxPrimitives.h>
+#endif
 #include <fmt/core.h>
 #include "../Log.hpp"
 
@@ -10,7 +12,9 @@ void Video::bindLua(lua_State *state)
         .beginClass<Video>("Video")
         .addFunction("draw_point", &Video::drawPixel)
         .addFunction("draw_rect", &Video::drawRect)
+#ifdef USE_SDL2_GFX
         .addFunction("draw_circle", &Video::drawCircle)
+#endif
         .addFunction("draw_line", &Video::drawLine)
         .addFunction("draw_texture", &Video::drawTexture)
         .addFunction("draw_text", &Video::drawText)
@@ -33,11 +37,13 @@ void Video::draw(size_t screenWidth, size_t screenHeight)
     SDL_SetRenderTarget(m_renderer, m_vgaTexture);
 }
 
+#ifdef USE_SDL2_GFX
 void Video::drawCircle(Vector2 const &pos, size_t radius, Color const &color)
 {
     SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
     filledCircleRGBA(m_renderer, (int32_t)pos.x, (int32_t)pos.y, radius, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
 }
+#endif
 
 void Video::drawPixel(Vector2 const &pos, Color const &color)
 {

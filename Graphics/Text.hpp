@@ -43,7 +43,7 @@ public:
 private:
     Vector2 m_position;
     Vector2 m_scale;
-    SDL_Texture *m_texture;
+    SDL_Texture *m_texture = nullptr;
     std::string m_text;
     int32_t m_textWidth;
     int32_t m_textHeight;

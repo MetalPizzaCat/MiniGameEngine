@@ -4,6 +4,8 @@ project(MiniGameEngine  VERSION 0.1.0)
 set(ENGINE_DEFAULT_FONT_NAME Roboto-Medium.ttf)
 add_compile_definitions(DEFAULT_FONT_NAME="${ENGINE_DEFAULT_FONT_NAME}")
 add_compile_definitions(DEFAULT_FONT_SIZE=32)
+#comment this line out or remove it to build without using SDL2_GFX
+add_compile_definitions(USE_SDL_GFX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

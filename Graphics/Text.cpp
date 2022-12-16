@@ -22,6 +22,11 @@ void Text::setColor(Color color)
 void Text::setText(std::string const &text)
 {
     m_text = text;
+    //free old texture to avoid memory leaks
+    if (m_texture != nullptr)
+    {
+        SDL_DestroyTexture(m_texture);
+    }
     SDL_Surface *textSurf = TTF_RenderText_Solid(m_video->getDefaultFont(), text.c_str(), SDL_Color{.r = m_color.r, .g = m_color.g, .b = m_color.b, .a = SDL_ALPHA_OPAQUE});
     if (textSurf == nullptr)
     {
