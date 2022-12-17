@@ -114,12 +114,12 @@ void Window::handleEvents()
         {
             int32_t x, y;
             SDL_GetMouseState(&x, &y);
-            int32_t winX, winY;
-            SDL_GetWindowPosition(m_window, &winX, &winY);
+            int32_t windowWidth, windowHeight;
+            SDL_GetWindowSize(m_window, &windowWidth, &windowHeight);
+            float mouseY = (float)y * ((float)m_video->getHeight() / (float)windowHeight);
+            float mouseX = ((float)x * ((float)m_video->getWidth() / (float)windowWidth));
             inputMouseLua(MouseEvent{.state = {MouseState{
-                                         .position = Vector2((float)(x), (float)(y)),
-                                         .pressed = event.button.state == SDL_PRESSED,
-                                         .clicks = event.button.clicks}},
+                                         .position = Vector2(mouseX, mouseY), .pressed = event.button.state == SDL_PRESSED, .clicks = event.button.clicks}},
                                      .eventType = (uint8_t)MouseEventType::Motion});
         }
     }
