@@ -12,6 +12,7 @@ struct Vector2
     float y;
 
     Vector2(float x, float y) : x(x), y(y) {}
+    Vector2() : x(0), y(0) {}
     Vector2 normalize();
     Vector2 add(Vector2 const &b);
     Vector2 sub(Vector2 const &b);

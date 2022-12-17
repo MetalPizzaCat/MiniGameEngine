@@ -47,6 +47,8 @@ add_executable(MiniGameEngine
     Graphics/Vector.cpp
     System/Input.hpp
     System/Input.cpp
+    System/Mouse.hpp
+    System/Mouse.cpp
     Graphics/Texture.hpp
     Graphics/Texture.cpp
     Graphics/Text.hpp

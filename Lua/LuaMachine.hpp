@@ -50,19 +50,24 @@ public:
         luabridge::LuaRef fn = luabridge::getGlobal(m_lua, name);
         if (fn.isNil())
         {
-            Log::error(std::string("Unable to find function with name") + name);
+            Log::error(fmt::format("Unable to find function with name: {}", name));
             return false;
         }
         if (!fn.isFunction())
         {
-            Log::error(std::string("Object") + name + "is not a function");
+            Log::error(fmt::format("Object {} is not a function", name));
             return false;
         }
         fn(args...);
         return true;
     }
 
-    /// @brief Load chunk of lua code and execute it immediately 
+    /// @brief Check if a function is present in loaded lua code
+    /// @param name
+    /// @return
+    bool isFunctionPresent(const char *name);
+
+    /// @brief Load chunk of lua code and execute it immediately
     /// @param code Text for the code
     /// @return True is code was successfully loaded and executed
     bool loadCode(const char *code);

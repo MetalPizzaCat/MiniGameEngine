@@ -97,9 +97,13 @@ private:
     /// @brief Execute update sequence in lua code
     void updateLua();
 
+    void inputMouseLua(MouseEvent const &event);
+
     /// @brief Handle all of the window, keyboard and mouse events
     void handleEvents();
 
     /// @brief Bind all of the classes to the lua machine
     void bindLuaObjects();
+
+    Vector2 getMousePosition();
 };

@@ -11,3 +11,9 @@ bool LuaMachine::loadCode(const char *code)
     }
     return true;
 }
+
+bool LuaMachine::isFunctionPresent(const char *name)
+{
+    luabridge::LuaRef fn = luabridge::getGlobal(m_lua, name);
+    return !fn.isNil() && fn.isFunction();
+}
