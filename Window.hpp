@@ -97,6 +97,8 @@ private:
     /// @brief Execute update sequence in lua code
     void updateLua();
 
+    void inputMouseLua(MouseEvent const &event);
+
     /// @brief Handle all of the window, keyboard and mouse events
     void handleEvents();
 
