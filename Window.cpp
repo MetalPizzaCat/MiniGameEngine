@@ -88,13 +88,11 @@ void Window::handleEvents()
             int32_t x, y;
             SDL_GetMouseState(&x, &y);
             MouseState mouse = MouseState{
-                .position = Vector2((float)x, (float)y),
+                .position = getMousePosition(),
+                .button = event.button.button,
                 .pressed = true,
                 .clicks = event.button.clicks};
-            m_input.setMouseButtonState((MouseButton)event.button.button, MouseState{
-                                                                              .position = Vector2((float)x, (float)y),
-                                                                              .pressed = true,
-                                                                              .clicks = event.button.clicks});
+            m_input.setMouseButtonState((MouseButton)event.button.button, mouse);
             inputMouseLua(MouseEvent{.state = mouse, .eventType = (uint8_t)MouseEventType::Press});
         }
 
@@ -103,7 +101,8 @@ void Window::handleEvents()
             int32_t x, y;
             SDL_GetMouseState(&x, &y);
             MouseState mouse = MouseState{
-                .position = Vector2((float)x, (float)y),
+                .position = getMousePosition(),
+                .button = event.button.button,
                 .pressed = false,
                 .clicks = event.button.clicks};
             m_input.setMouseButtonState((MouseButton)event.button.button, mouse);
@@ -112,15 +111,12 @@ void Window::handleEvents()
 
         if (event.type == SDL_MOUSEMOTION)
         {
-            int32_t x, y;
-            SDL_GetMouseState(&x, &y);
-            int32_t windowWidth, windowHeight;
-            SDL_GetWindowSize(m_window, &windowWidth, &windowHeight);
-            float mouseY = (float)y * ((float)m_video->getHeight() / (float)windowHeight);
-            float mouseX = ((float)x * ((float)m_video->getWidth() / (float)windowWidth));
-            inputMouseLua(MouseEvent{.state = {MouseState{
-                                         .position = Vector2(mouseX, mouseY), .pressed = event.button.state == SDL_PRESSED, .clicks = event.button.clicks}},
-                                     .eventType = (uint8_t)MouseEventType::Motion});
+            MouseState mouse = MouseState{
+                .position = getMousePosition(),
+                .button = event.button.button,
+                .pressed = event.button.state == SDL_PRESSED,
+                .clicks = event.button.clicks};
+            inputMouseLua(MouseEvent{.state = mouse, .eventType = (uint8_t)MouseEventType::Motion});
         }
     }
 }
@@ -147,6 +143,17 @@ void Window::inputMouseLua(MouseEvent const &event)
     {
         m_lua->call("_mouseInput", event);
     }
+}
+
+Vector2 Window::getMousePosition()
+{
+    int32_t x, y;
+    SDL_GetMouseState(&x, &y);
+    int32_t windowWidth, windowHeight;
+    SDL_GetWindowSize(m_window, &windowWidth, &windowHeight);
+    float mouseY = (float)y * ((float)m_video->getHeight() / (float)windowHeight);
+    float mouseX = ((float)x * ((float)m_video->getWidth() / (float)windowWidth));
+    return Vector2(mouseX, mouseY);
 }
 
 void Window::bindLuaObjects()

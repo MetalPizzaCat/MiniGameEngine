@@ -8,7 +8,7 @@ void MouseState::bindLua(lua_State *state)
         .addProperty("is_released", &MouseState::released)
         .addProperty("position", &MouseState::position)
         .addProperty("click_count", &MouseState::clicks)
-        .addProperty("is_button", &MouseState::button)
+        .addProperty("button", &MouseState::button)
         .endClass();
 }
 

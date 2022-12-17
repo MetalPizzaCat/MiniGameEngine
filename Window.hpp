@@ -104,4 +104,6 @@ private:
 
     /// @brief Bind all of the classes to the lua machine
     void bindLuaObjects();
+
+    Vector2 getMousePosition();
 };
