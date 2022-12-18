@@ -30,9 +30,8 @@ void Video::draw(size_t screenWidth, size_t screenHeight)
     SDL_RenderPresent(m_renderer);
     // set target to be window
     SDL_SetRenderTarget(m_renderer, nullptr);
-    SDL_Rect vgaRect{.x = 0, .y = 0, .w = screenWidth, .h = screenHeight};
+    SDL_Rect vgaRect{.x = 0, .y = 0, .w = std::min(screenWidth, screenHeight), .h = std::min(screenWidth, screenHeight)};
     SDL_RenderCopy(m_renderer, m_vgaTexture, nullptr, &vgaRect);
-    SDL_RenderDrawPointF(m_renderer, 5.f, 50.f);
     SDL_RenderPresent(m_renderer);
     // set to texture mode
     SDL_SetRenderTarget(m_renderer, m_vgaTexture);

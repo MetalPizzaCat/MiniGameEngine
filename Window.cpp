@@ -118,6 +118,14 @@ void Window::handleEvents()
                 .clicks = event.button.clicks};
             inputMouseLua(MouseEvent{.state = mouse, .eventType = (uint8_t)MouseEventType::Motion});
         }
+
+        if (event.type == SDL_WINDOWEVENT)
+        {
+            if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED || event.window.event == SDL_WINDOWEVENT_RESIZED)
+            {
+                SDL_GetWindowSize(m_window, &m_width, &m_height);
+            }
+        }
     }
 }
 

@@ -29,7 +29,7 @@ public:
                                             m_running(true)
 
     {
-        m_window = SDL_CreateWindow("Nema-Video v0.0.1", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
+        m_window = SDL_CreateWindow("Nema-Video v0.0.1", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
         m_video = new Video(canvasWidth, canvasHeight, SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RendererFlags::SDL_RENDERER_PRESENTVSYNC));
 
@@ -109,7 +109,11 @@ private:
     /// @return position
     Vector2 getMousePosition();
 
+    /// @brief Get size of the physical window
+    /// @return Window size
     Vector2 getWindowSize() const;
 
+    /// @brief Set size of the physical window
+    /// @param size New size
     void setWindowSize(Vector2 const &size);
 };
