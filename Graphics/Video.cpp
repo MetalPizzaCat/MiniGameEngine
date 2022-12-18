@@ -17,6 +17,7 @@ void Video::bindLua(lua_State *state)
 #endif
         .addFunction("draw_line", &Video::drawLine)
         .addFunction("draw_texture", &Video::drawTexture)
+        .addFunction("draw_texture_clip", &Video::drawTextureClip)
         .addFunction("draw_text", &Video::drawText)
         .addFunction("clear", &Video::clear)
         .addProperty("screen_width", &Video::m_width, false)
@@ -74,6 +75,21 @@ void Video::drawTexture(Vector2 const &pos, Vector2 const &size, TextureResource
         return;
     }
     if (SDL_RenderCopyF(m_renderer, tex->getTexture()->getTexture(), nullptr, &rect) == -1)
+    {
+        Log::error(fmt::format("Failed to render texture : {}", SDL_GetError()));
+    }
+}
+
+void Video::drawTextureClip(Vector2 const &pos, Vector2 const &size, Vector2 const &sourceOffset, Vector2 const &sourceSize, TextureResource *tex)
+{
+    SDL_FRect rect{.x = pos.x, .y = pos.y, .w = size.x, .h = size.y};
+    SDL_Rect srcRect{.x = (int32_t)sourceOffset.x, .y = (int32_t)sourceOffset.y, .w = (int32_t)sourceSize.x, .h = (int32_t)sourceSize.y};
+    if (tex == nullptr || tex->getTexture() == nullptr || tex->getTexture()->getTexture() == nullptr)
+    {
+        Log::error("Attempted to draw null texture");
+        return;
+    }
+    if (SDL_RenderCopyF(m_renderer, tex->getTexture()->getTexture(), &srcRect, &rect) == -1)
     {
         Log::error(fmt::format("Failed to render texture : {}", SDL_GetError()));
     }

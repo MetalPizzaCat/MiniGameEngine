@@ -29,17 +29,29 @@ const char *const g_code = R"(
         Graphics:draw_circle(Vector2(60,150),10,Color(0,0,255))
     end
 )";
+
 int main(int, char **)
 {
+#ifdef SILENT_FAILURE
     try
     {
         Window win(600, 600);
         win.run();
         return EXIT_SUCCESS;
     }
+    catch (luabridge::LuaException e)
+    {
+        Log::error(e.what());
+        return EXIT_FAILURE;
+    }
     catch (std::exception e)
     {
         Log::error(e.what());
         return EXIT_FAILURE;
     }
+#else
+    Window win(600, 600);
+    win.run();
+    return EXIT_SUCCESS;
+#endif
 }
