@@ -105,5 +105,11 @@ private:
     /// @brief Bind all of the classes to the lua machine
     void bindLuaObjects();
 
+    /// @brief Get mouse position relative to the window scaled to the video output size
+    /// @return position
     Vector2 getMousePosition();
+
+    Vector2 getWindowSize() const;
+
+    void setWindowSize(Vector2 const &size);
 };

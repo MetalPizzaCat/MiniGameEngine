@@ -44,6 +44,11 @@ int main(int, char **)
         Log::error(e.what());
         return EXIT_FAILURE;
     }
+    catch (std::logic_error e)
+    {
+        Log::error(e.what());
+        return EXIT_FAILURE;
+    }
     catch (std::exception e)
     {
         Log::error(e.what());

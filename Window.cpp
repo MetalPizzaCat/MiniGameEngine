@@ -156,8 +156,26 @@ Vector2 Window::getMousePosition()
     return Vector2(mouseX, mouseY);
 }
 
+Vector2 Window::getWindowSize() const
+{
+    return Vector2((float)m_width, (float)m_height);
+}
+
+void Window::setWindowSize(Vector2 const &size)
+{
+    SDL_SetWindowSize(m_window, (int32_t)size.x, (int32_t)size.y);
+    m_width = (int32_t)size.x;
+    m_height = (int32_t)size.y;
+}
+
 void Window::bindLuaObjects()
 {
+    luabridge::getGlobalNamespace(m_lua->getState())
+        .beginClass<Window>("Window")
+        .addFunction("get_size", &Window::getWindowSize)
+        .addFunction("set_size", &Window::setWindowSize)
+        .endClass();
+
     Color::bindLua(m_lua->getState());
     Vector2::bindLua(m_lua->getState());
     Video::bindLua(m_lua->getState());
@@ -178,4 +196,6 @@ void Window::bindLuaObjects()
     lua_setglobal(m_lua->getState(), "Input");
     luabridge::push(m_lua->getState(), &m_manager);
     lua_setglobal(m_lua->getState(), "ContentManager");
+    luabridge::push(m_lua->getState(), this);
+    lua_setglobal(m_lua->getState(), "Window");
 }
