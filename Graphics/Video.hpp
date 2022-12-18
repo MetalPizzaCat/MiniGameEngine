@@ -67,6 +67,15 @@ public:
     /// @param pos Location
     void drawTexture(Vector2 const &pos, Vector2 const &size, TextureResource *tex);
 
+    
+    /// @brief Draw part of the texture to the screen
+    /// @param pos Position to draw at
+    /// @param size Size on the screen
+    /// @param sourceOffset Offset of the clip rectangle in texture space
+    /// @param sourceSize Size of the clip rectangle
+    /// @param tex texture
+    void drawTextureClip(Vector2 const &pos, Vector2 const &size, Vector2 const &sourceOffset, Vector2 const &sourceSize, TextureResource *tex);
+
     /// @brief Draw raw sdl texture to the screen
     void drawTextureRaw(Vector2 const &pos, Vector2 const &size, SDL_Texture *texture);
 
