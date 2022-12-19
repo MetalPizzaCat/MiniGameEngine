@@ -19,6 +19,7 @@ Engine uses
 | SDL2_gfx   | 1.0.4                   | https://sourceforge.net/projects/sdl2gfx/ | Used for helper drawing functions, can be removed |
 | Lua        | 5.4                     | https://www.lua.org/                      |                                                   |
 | fmt        | Latest in official repo | https://github.com/fmtlib/fmt.git         |                                                   |
+| box2D      | 2.4.1-3                 | https://github.com/erincatto/box2d        |                                                   |
 
 ## Getting the engine
 All of the engine dependencies must be installed. Building the engine just requires to use `cmake build`
