@@ -17,6 +17,7 @@ void Video::bindLua(lua_State *state)
 #endif
         .addFunction("draw_line", &Video::drawLine)
         .addFunction("draw_texture", &Video::drawTexture)
+        .addFunction("draw_texture_ex", &Video::drawTextureEx)
         .addFunction("draw_texture_clip", &Video::drawTextureClip)
         .addFunction("draw_text", &Video::drawText)
         .addFunction("clear", &Video::clear)
@@ -73,6 +74,21 @@ void Video::drawRect(Vector2 const &pos, Vector2 const &size, Color const &color
     SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
     SDL_FRect rect{.x = pos.x, .y = pos.y, .w = size.x, .h = size.y};
     SDL_RenderFillRectF(m_renderer, &rect);
+}
+
+void Video::drawTextureEx(Vector2 const &pos, Vector2 const &size, float angle, TextureResource *tex)
+{
+    SDL_FRect rect{.x = pos.x, .y = pos.y, .w = size.x, .h = size.y};
+    SDL_Rect srcRect{.x = 0, .y = 0, .w = 32, .h = 32};
+    if (tex == nullptr || tex->getTexture() == nullptr || tex->getTexture()->getTexture() == nullptr)
+    {
+        Log::error("Attempted to draw null texture");
+        return;
+    }
+    if (SDL_RenderCopyExF(m_renderer, tex->getTexture()->getTexture(), nullptr, &rect, angle * (180.f / M_PIl ), nullptr, SDL_FLIP_NONE) == -1)
+    {
+        Log::error(fmt::format("Failed to render texture : {}", SDL_GetError()));
+    }
 }
 
 void Video::drawLine(Vector2 const &a, Vector2 const &b, Color const &color)

@@ -9,7 +9,7 @@ public:
     {
         b2BodyDef bodyDef;
         bodyDef.type = (b2BodyType)type;
-        bodyDef.position.Set(position.x / world->getWorldScale(), position.y / world->getWorldScale());
+        bodyDef.position.Set(position.x / PHYSICS_SCALE, position.y / PHYSICS_SCALE);
         m_body = m_world->getWorld()->CreateBody(&bodyDef);
 
         m_body->CreateFixture(shape.getFixtureDef());
@@ -18,6 +18,10 @@ public:
     /// @brief Get current location of the body in the physics world
     /// @return current location
     Vector2 getPosition() const;
+
+    /// @brief Current rotation in radians
+    /// @return  Current rotation in radians
+    float getRotation() const;
 
     ~PhysicsBody()
     {

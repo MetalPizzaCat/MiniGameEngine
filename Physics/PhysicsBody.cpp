@@ -6,6 +6,7 @@ void PhysicsBody::bindLua(lua_State *state)
         .beginNamespace("Physics")
         .beginClass<PhysicsBody>("Body")
         .addFunction("get_position", &PhysicsBody::getPosition)
+        .addFunction("get_rotation", &PhysicsBody::getRotation)
         .addConstructor<void (*)(PhysicsWorld *, Vector2, ColliderShape const &, int)>()
         .endClass()
         .endNamespace();
@@ -13,4 +14,9 @@ void PhysicsBody::bindLua(lua_State *state)
 Vector2 PhysicsBody::getPosition() const
 {
     return Vector2(m_body->GetPosition().x * m_world->getWorldScale(), m_body->GetPosition().y * m_world->getWorldScale());
+}
+
+float PhysicsBody::getRotation() const
+{
+    return m_body->GetAngle();
 }

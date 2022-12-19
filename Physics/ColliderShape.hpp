@@ -22,10 +22,10 @@ protected:
 class CircleColliderShape : public ColliderShape
 {
 public:
-    CircleColliderShape(PhysicsWorld *world, float radius) : m_radius(radius)
+    CircleColliderShape(float radius) : m_radius(radius)
     {
         m_circle.m_radius = radius;
-        m_circle.m_p = b2Vec2(m_radius, m_radius);
+        m_circle.m_p = b2Vec2(m_radius / PHYSICS_SCALE, m_radius / PHYSICS_SCALE);
         m_def.shape = &m_circle;
     }
     static void bindLua(lua_State *state);
@@ -39,10 +39,12 @@ class RectangleColliderShape : public ColliderShape
 {
 
 public:
-    RectangleColliderShape(PhysicsWorld *world, float width, float height)
+    RectangleColliderShape(float width, float height)
     {
-        m_rect.SetAsBox((width / 2.f) / world->getWorldScale(), (height / 2.f) / world->getWorldScale());
+        m_rect.SetAsBox((width / 2.f) / PHYSICS_SCALE, (height / 2.f) / PHYSICS_SCALE);
         m_def.shape = &m_rect;
+        m_def.density = 1.f;
+        m_def.friction = 1.f;
     }
 
     static void bindLua(lua_State *state);

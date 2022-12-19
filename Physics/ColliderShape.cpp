@@ -14,7 +14,7 @@ void CircleColliderShape::bindLua(lua_State *state)
     luabridge::getGlobalNamespace(state)
         .beginNamespace("Physics")
         .deriveClass<CircleColliderShape, ColliderShape>("CircleColliderShape")
-        .addConstructor<void (*)(PhysicsWorld *, float)>()
+        .addConstructor<void (*)(float)>()
         .endClass()
         .endNamespace();
 }
@@ -24,7 +24,7 @@ void RectangleColliderShape::bindLua(lua_State *state)
     luabridge::getGlobalNamespace(state)
         .beginNamespace("Physics")
         .deriveClass<RectangleColliderShape, ColliderShape>("RectangleColliderShape")
-        .addConstructor<void (*)(PhysicsWorld *, float, float)>()
+        .addConstructor<void (*)(float, float)>()
         .endClass()
         .endNamespace();
 }
