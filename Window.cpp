@@ -137,12 +137,18 @@ void Window::run()
     {
         handleEvents();
         clearScreen();
+        updatePhysics();
         updateLua();
         render();
         SDL_framerateDelay(&m_fps);
         m_delta = (((float)(std::clock() - m_lastUpdate)) / CLOCKS_PER_SEC) * 1000.f;
         m_lastUpdate = std::clock();
     }
+}
+
+void Window::updatePhysics()
+{
+    m_world.step(1.f / 60.f);
 }
 
 void Window::inputMouseLua(MouseEvent const &event)
@@ -196,6 +202,8 @@ void Window::bindLuaObjects()
     MouseEvent::bindLua(m_lua->getState());
     ContentManager::bindLua(m_lua->getState());
     TextureResource::bindLua(m_lua->getState());
+    bindPhysicsToLua(m_lua->getState());
+
     luabridge::push(m_lua->getState(), m_video);
     lua_setglobal(m_lua->getState(), "Graphics");
     luabridge::push(m_lua->getState(), &m_system);
@@ -206,4 +214,6 @@ void Window::bindLuaObjects()
     lua_setglobal(m_lua->getState(), "ContentManager");
     luabridge::push(m_lua->getState(), this);
     lua_setglobal(m_lua->getState(), "Window");
+    luabridge::push(m_lua->getState(), &m_world);
+    lua_setglobal(m_lua->getState(), "PhysicsWorld");
 }

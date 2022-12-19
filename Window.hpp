@@ -17,6 +17,8 @@
 #include "System/System.hpp"
 #include "System/Input.hpp"
 #include "Content/ContentManager.hpp"
+#include "Physics/Physics.hpp"
+#include "Physics/PhysicsDebug.hpp"
 
 /// @brief Class that handles SDL window and communication between parts of software
 class Window
@@ -26,7 +28,8 @@ public:
     static const size_t canvasHeight = 1024;
     Window(int32_t width, int32_t height) : m_width(width),
                                             m_height(height),
-                                            m_running(true)
+                                            m_running(true),
+                                            m_world(Vector2(0, 9.8f))
 
     {
         m_window = SDL_CreateWindow("Nema-Video v0.0.1", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
@@ -38,7 +41,7 @@ public:
             Log::error("Failed to init window and renderer");
             exit(EXIT_FAILURE);
         }
-        m_lua = std::make_unique<LuaMachine>();
+        m_lua = new LuaMachine();
         bindLuaObjects();
         SDL_initFramerate(&m_fps);
 
@@ -51,15 +54,19 @@ public:
         {
             Log::error(fmt::format("Failed to init SDL2_Image: {}", IMG_GetError()));
         }
+        m_physicsDebug = new PhysicsDebugDraw(m_video);
+        m_world.setDebugDraw(m_physicsDebug);
     }
 
     /// @brief Starts the game loop
     void run();
 
-    LuaMachine *getLua() { return m_lua.get(); }
+    LuaMachine *getLua() { return m_lua; }
 
     ~Window()
     {
+        delete m_lua;
+        delete m_physicsDebug;
         SDL_DestroyWindow(m_window);
         SDL_Quit();
         IMG_Quit();
@@ -73,12 +80,14 @@ private:
     /// @brief Height of the screen
     int32_t m_height;
     bool m_running;
-    std::unique_ptr<LuaMachine> m_lua;
+    LuaMachine *m_lua;
     Video *m_video;
     System m_system;
     Input m_input;
     FPSmanager m_fps;
     ContentManager m_manager;
+    PhysicsWorld m_world;
+    PhysicsDebugDraw *m_physicsDebug;
     /// @brief Amount of time passed since last frame. Default value is just random non zero value
     float m_delta = 0.000717;
     /// @brief Clock fo storing last time when update happened
@@ -101,6 +110,8 @@ private:
 
     /// @brief Handle all of the window, keyboard and mouse events
     void handleEvents();
+
+    void updatePhysics();
 
     /// @brief Bind all of the classes to the lua machine
     void bindLuaObjects();

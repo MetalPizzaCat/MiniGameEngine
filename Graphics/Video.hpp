@@ -63,11 +63,17 @@ public:
     /// @param color Color
     void drawLine(Vector2 const &a, Vector2 const &b, Color const &color);
 
+#ifdef USE_SDL2_GFX
+    /// @brief Draw a polygon with given points
+    /// @param points Points of the polygon
+    /// @param color Color of the polygon
+    void drawPolygon(std::vector<Vector2> const &points, Color const &color);
+#endif
+
     /// @brief Draws texture at given coords
     /// @param pos Location
     void drawTexture(Vector2 const &pos, Vector2 const &size, TextureResource *tex);
 
-    
     /// @brief Draw part of the texture to the screen
     /// @param pos Position to draw at
     /// @param size Size on the screen

@@ -51,6 +51,23 @@ void Video::drawPixel(Vector2 const &pos, Color const &color)
     SDL_RenderDrawPointF(m_renderer, pos.x, pos.y);
 }
 
+#ifdef USE_SDL2_GFX
+void Video::drawPolygon(std::vector<Vector2> const &points, Color const &color)
+{
+    int16_t *x = new int16_t[points.size()];
+    int16_t *y = new int16_t[points.size()];
+
+    for (size_t i = 0; i < points.size(); i++)
+    {
+        x[i] = points[i].x;
+        y[i] = points[i].y;
+    }
+    aapolygonRGBA(m_renderer, x, y, points.size(), color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
+    delete x;
+    delete y;
+}
+#endif
+
 void Video::drawRect(Vector2 const &pos, Vector2 const &size, Color const &color)
 {
     SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
