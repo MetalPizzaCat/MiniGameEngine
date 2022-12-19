@@ -41,7 +41,7 @@ class RectangleColliderShape : public ColliderShape
 public:
     RectangleColliderShape(PhysicsWorld *world, float width, float height)
     {
-        m_rect.SetAsBox(width / 2, height / 2);
+        m_rect.SetAsBox((width / 2.f) / world->getWorldScale(), (height / 2.f) / world->getWorldScale());
         m_def.shape = &m_rect;
     }
 

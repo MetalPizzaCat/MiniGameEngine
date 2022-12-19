@@ -13,6 +13,7 @@ void Vector2::bindLua(lua_State *state)
         .addFunction("__add", &Vector2::add)
         .addFunction("__sub", &Vector2::sub)
         .addFunction("__mul", &Vector2::mul)
+        .addFunction("__div", &Vector2::div)
         .addFunction("__tostring", &Vector2::toString)
         .addConstructor<void (*)(float, float)>()
         .endClass();
@@ -50,4 +51,9 @@ Vector2 Vector2::sub(Vector2 const &b)
 Vector2 Vector2::mul(float b)
 {
     return Vector2(x * b, y * b);
+}
+
+Vector2 Vector2::div(float b)
+{
+    return Vector2(x / b, y / b);
 }

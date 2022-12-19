@@ -6,7 +6,7 @@ add_compile_definitions(DEFAULT_FONT_NAME="${ENGINE_DEFAULT_FONT_NAME}")
 # How big is the default font
 add_compile_definitions(DEFAULT_FONT_SIZE=32)
 # Defines how much pixels make up 1m. For example PHYSICS_SCALE=64 means 1m = 64 pixels
-add_compile_definitions(PHYSICS_SCALE=8)
+add_compile_definitions(PHYSICS_SCALE=128)
 #comment this line out or remove it to build without using SDL2_GFX
 add_compile_definitions(USE_SDL2_GFX)
 # uncomment this to prevent fatal crashes from displaying error messages and just watch OS handle c++ exceptions itself instead
