@@ -32,7 +32,7 @@ const char *const g_code = R"(
 
 int main(int, char **)
 {
-#ifdef SILENT_FAILURE
+#ifndef SILENT_FAILURE
     try
     {
         Window win(600, 600);

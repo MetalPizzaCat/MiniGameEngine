@@ -17,6 +17,7 @@ void Video::bindLua(lua_State *state)
 #endif
         .addFunction("draw_line", &Video::drawLine)
         .addFunction("draw_texture", &Video::drawTexture)
+        .addFunction("draw_texture_ex", &Video::drawTextureEx)
         .addFunction("draw_texture_clip", &Video::drawTextureClip)
         .addFunction("draw_text", &Video::drawText)
         .addFunction("clear", &Video::clear)
@@ -51,11 +52,43 @@ void Video::drawPixel(Vector2 const &pos, Color const &color)
     SDL_RenderDrawPointF(m_renderer, pos.x, pos.y);
 }
 
+#ifdef USE_SDL2_GFX
+void Video::drawPolygon(std::vector<Vector2> const &points, Color const &color)
+{
+    int16_t *x = new int16_t[points.size()];
+    int16_t *y = new int16_t[points.size()];
+
+    for (size_t i = 0; i < points.size(); i++)
+    {
+        x[i] = points[i].x;
+        y[i] = points[i].y;
+    }
+    aapolygonRGBA(m_renderer, x, y, points.size(), color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
+    delete x;
+    delete y;
+}
+#endif
+
 void Video::drawRect(Vector2 const &pos, Vector2 const &size, Color const &color)
 {
     SDL_SetRenderDrawColor(m_renderer, color.r, color.g, color.b, SDL_ALPHA_OPAQUE);
     SDL_FRect rect{.x = pos.x, .y = pos.y, .w = size.x, .h = size.y};
     SDL_RenderFillRectF(m_renderer, &rect);
+}
+
+void Video::drawTextureEx(Vector2 const &pos, Vector2 const &size, float angle, TextureResource *tex)
+{
+    SDL_FRect rect{.x = pos.x, .y = pos.y, .w = size.x, .h = size.y};
+    SDL_Rect srcRect{.x = 0, .y = 0, .w = 32, .h = 32};
+    if (tex == nullptr || tex->getTexture() == nullptr || tex->getTexture()->getTexture() == nullptr)
+    {
+        Log::error("Attempted to draw null texture");
+        return;
+    }
+    if (SDL_RenderCopyExF(m_renderer, tex->getTexture()->getTexture(), nullptr, &rect, angle * (180.f / M_PIl ), nullptr, SDL_FLIP_NONE) == -1)
+    {
+        Log::error(fmt::format("Failed to render texture : {}", SDL_GetError()));
+    }
 }
 
 void Video::drawLine(Vector2 const &a, Vector2 const &b, Color const &color)
