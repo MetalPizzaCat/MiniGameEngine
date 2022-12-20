@@ -16,8 +16,18 @@ public:
         m_world = std::make_unique<b2World>(PhysicsHelpers::fromVector2(gravity));
     }
 
+    /// @brief Call physics update fuctions
+    /// @param timeStep physics update delta
     void step(float32 timeStep);
+
+    /// @brief Get Box2D world object
+    /// @return Box2D world object
     b2World *getWorld() { return m_world.get(); }
+
+    void setGravity(Vector2 const &gravity);
+
+    Vector2 getGravity() const;
+
     float getWorldScale() const { return m_worldScale; }
 
     void setDebugDraw(b2Draw *debug);

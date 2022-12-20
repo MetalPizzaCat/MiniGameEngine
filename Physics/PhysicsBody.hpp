@@ -19,6 +19,10 @@ public:
     /// @return current location
     Vector2 getPosition() const;
 
+    Vector2 getVelocity() const;
+
+    void setVelocity(Vector2 const& velocity);
+
     /// @brief Current rotation in radians
     /// @return  Current rotation in radians
     float getRotation() const;

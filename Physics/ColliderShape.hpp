@@ -24,7 +24,7 @@ class CircleColliderShape : public ColliderShape
 public:
     CircleColliderShape(float radius) : m_radius(radius)
     {
-        m_circle.m_radius = radius;
+        m_circle.m_radius = radius / PHYSICS_SCALE;
         m_circle.m_p = b2Vec2(m_radius / PHYSICS_SCALE, m_radius / PHYSICS_SCALE);
         m_def.shape = &m_circle;
     }
@@ -43,8 +43,6 @@ public:
     {
         m_rect.SetAsBox((width / 2.f) / PHYSICS_SCALE, (height / 2.f) / PHYSICS_SCALE);
         m_def.shape = &m_rect;
-        m_def.density = 1.f;
-        m_def.friction = 1.f;
     }
 
     static void bindLua(lua_State *state);
