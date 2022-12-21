@@ -11,7 +11,9 @@ void PhysicsBody::bindLua(lua_State *state)
         .addProperty("velocity", &PhysicsBody::getVelocity, &PhysicsBody::setVelocity)
         .addProperty("on_collision_begin", &PhysicsBody::m_contactBeginCallback)
         .addProperty("on_collision_end", &PhysicsBody::m_contactEndCallback)
-        .addConstructor<void (*)(PhysicsWorld *, Vector2, ColliderShape const &, int, luabridge::LuaRef, luabridge::LuaRef)>()
+        .addProperty("data", &PhysicsBody::m_data)
+        .addProperty("active", &PhysicsBody::getIsActive,&PhysicsBody::setIsActive)
+        .addConstructor<void (*)(PhysicsWorld *, Vector2, ColliderShape const &, int, luabridge::LuaRef, luabridge::LuaRef, luabridge::LuaRef)>()
         .endClass()
         .endNamespace();
 }

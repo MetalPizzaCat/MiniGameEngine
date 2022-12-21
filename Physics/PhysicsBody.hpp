@@ -3,6 +3,7 @@
 #include "ColliderShape.hpp"
 #include "../Lua/LuaMachine.hpp"
 
+/// @brief Class that represents a body in a physical world
 class PhysicsBody
 {
 public:
@@ -11,9 +12,11 @@ public:
                 ColliderShape const &shape,
                 int type,
                 luabridge::LuaRef contactBeginCallback,
-                luabridge::LuaRef contactEndCallback) : m_world(world),
-                                                        m_contactBeginCallback(contactBeginCallback),
-                                                        m_contactEndCallback(contactEndCallback)
+                luabridge::LuaRef contactEndCallback,
+                luabridge::LuaRef data) : m_world(world),
+                                          m_contactBeginCallback(contactBeginCallback),
+                                          m_contactEndCallback(contactEndCallback),
+                                          m_data(data)
     {
         b2BodyDef bodyDef;
         bodyDef.type = (b2BodyType)type;
@@ -36,8 +39,21 @@ public:
     /// @return  Current rotation in radians
     float getRotation() const;
 
+    /// @brief Called when contact between this and other body happens
+    /// @param other Body with which this body collided
     void BeginContact(PhysicsBody *other);
+
+    /// @brief Called when contact between this and other body end
+    /// @param other Body with which this body collided
     void EndContact(PhysicsBody *other);
+
+    /// @brief Sets body to inactive
+    void setIsActive(bool active)
+    {
+        m_body->SetActive(active);
+    }
+
+    bool getIsActive() const { return m_body->IsActive(); }
 
     ~PhysicsBody()
     {
@@ -51,4 +67,5 @@ private:
     b2Body *m_body;
     luabridge::LuaRef m_contactBeginCallback;
     luabridge::LuaRef m_contactEndCallback;
+    luabridge::LuaRef m_data;
 };
