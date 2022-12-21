@@ -73,6 +73,8 @@ add_executable(MiniGameEngine
     Physics/Physics.cpp
     Physics/PhysicsDebug.hpp
     Physics/PhysicsDebug.cpp
+    Physics/CollisionCallback.hpp
+    Physics/CollisionCallback.cpp
     )
 
 target_link_libraries(MiniGameEngine  PRIVATE LuaBridge SDL2_image SDL2_ttf SDL2_gfx lua dl fmt::fmt Box2D ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})

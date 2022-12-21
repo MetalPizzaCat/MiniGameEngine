@@ -9,7 +9,9 @@ void PhysicsBody::bindLua(lua_State *state)
         .addFunction("get_position", &PhysicsBody::getPosition)
         .addFunction("get_rotation", &PhysicsBody::getRotation)
         .addProperty("velocity", &PhysicsBody::getVelocity, &PhysicsBody::setVelocity)
-        .addConstructor<void (*)(PhysicsWorld *, Vector2, ColliderShape const &, int)>()
+        .addProperty("on_collision_begin", &PhysicsBody::m_contactBeginCallback)
+        .addProperty("on_collision_end", &PhysicsBody::m_contactEndCallback)
+        .addConstructor<void (*)(PhysicsWorld *, Vector2, ColliderShape const &, int, luabridge::LuaRef, luabridge::LuaRef)>()
         .endClass()
         .endNamespace();
 }
@@ -28,7 +30,23 @@ Vector2 PhysicsBody::getVelocity() const
     return Vector2(m_body->GetLinearVelocity().x, m_body->GetLinearVelocity().y);
 }
 
-void PhysicsBody::setVelocity(Vector2 const& velocity)
+void PhysicsBody::setVelocity(Vector2 const &velocity)
 {
     m_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
+}
+
+void PhysicsBody::BeginContact(PhysicsBody *other)
+{
+    if (!m_contactBeginCallback.isNil())
+    {
+        m_contactBeginCallback(this, other);
+    }
+}
+
+void PhysicsBody::EndContact(PhysicsBody *other)
+{
+    if (!m_contactEndCallback.isNil())
+    {
+        m_contactEndCallback(this, other);
+    }
 }

@@ -18,6 +18,7 @@
 #include "System/Input.hpp"
 #include "Content/ContentManager.hpp"
 #include "Physics/Physics.hpp"
+#include "Physics/CollisionCallback.hpp"
 #include "Physics/PhysicsDebug.hpp"
 
 /// @brief Class that handles SDL window and communication between parts of software
@@ -29,7 +30,7 @@ public:
     Window(int32_t width, int32_t height) : m_width(width),
                                             m_height(height),
                                             m_running(true),
-                                            m_world(Vector2(0, 9.8f))
+                                            m_world(Vector2(0, 9.8f), (b2ContactListener*)&m_collisionManager)
 
     {
         m_window = SDL_CreateWindow("Nema-Video v0.0.1", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
@@ -88,6 +89,7 @@ private:
     ContentManager m_manager;
     PhysicsWorld m_world;
     PhysicsDebugDraw *m_physicsDebug;
+    CollisionCallback m_collisionManager;
     /// @brief Amount of time passed since last frame. Default value is just random non zero value
     float m_delta = 0.000717;
     /// @brief Clock fo storing last time when update happened

@@ -11,9 +11,10 @@ namespace PhysicsHelpers
 class PhysicsWorld
 {
 public:
-    PhysicsWorld(Vector2 gravity)
+    PhysicsWorld(Vector2 gravity, b2ContactListener *contactListener)
     {
         m_world = std::make_unique<b2World>(PhysicsHelpers::fromVector2(gravity));
+        m_world->SetContactListener(contactListener);
     }
 
     /// @brief Call physics update fuctions
