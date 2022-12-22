@@ -12,11 +12,33 @@ void PhysicsBody::bindLua(lua_State *state)
         .addProperty("on_collision_begin", &PhysicsBody::m_contactBeginCallback)
         .addProperty("on_collision_end", &PhysicsBody::m_contactEndCallback)
         .addProperty("data", &PhysicsBody::m_data)
-        .addProperty("active", &PhysicsBody::getIsActive,&PhysicsBody::setIsActive)
-        .addConstructor<void (*)(PhysicsWorld *, Vector2, ColliderShape const &, int, luabridge::LuaRef, luabridge::LuaRef, luabridge::LuaRef)>()
+        .addProperty("active", &PhysicsBody::getIsActive, &PhysicsBody::setIsActive)
         .endClass()
         .endNamespace();
 }
+
+PhysicsBody::PhysicsBody(PhysicsWorld *world, Vector2 position, ColliderShape const &shape, int32_t type, luabridge::LuaRef contactBeginCallback, luabridge::LuaRef contactEndCallback, luabridge::LuaRef data) : m_world(world),
+                                                                                                                                                                                                                  m_contactBeginCallback(contactBeginCallback), m_contactEndCallback(contactEndCallback), m_data(data)
+{
+    b2BodyDef bodyDef;
+    bodyDef.type = (b2BodyType)type;
+    bodyDef.position.Set(position.x / PHYSICS_SCALE, position.y / PHYSICS_SCALE);
+    m_body = m_world->getWorld()->CreateBody(&bodyDef);
+
+    m_body->CreateFixture(shape.getFixtureDef());
+    m_body->SetUserData(this);
+}
+
+PhysicsBody::~PhysicsBody()
+{
+    m_world->destroyBody(this);
+}
+
+void PhysicsBody::setIsActive(bool active)
+{
+    m_active = active;
+}
+
 Vector2 PhysicsBody::getPosition() const
 {
     return Vector2(m_body->GetPosition().x * m_world->getWorldScale(), m_body->GetPosition().y * m_world->getWorldScale());
@@ -35,6 +57,14 @@ Vector2 PhysicsBody::getVelocity() const
 void PhysicsBody::setVelocity(Vector2 const &velocity)
 {
     m_body->SetLinearVelocity(b2Vec2(velocity.x, velocity.y));
+}
+
+void PhysicsBody::update()
+{
+    if (m_body->IsActive() != m_active)
+    {
+        m_body->SetActive(m_active);
+    }
 }
 
 void PhysicsBody::BeginContact(PhysicsBody *other)

@@ -1,31 +1,29 @@
 #pragma once
-#include "PhysicsWorld.hpp"
+// #include "PhysicsWorld.hpp"
 #include "ColliderShape.hpp"
+#include "../Graphics/Vector.hpp"
 #include "../Lua/LuaMachine.hpp"
 
+class PhysicsWorld;
 /// @brief Class that represents a body in a physical world
 class PhysicsBody
 {
 public:
-    PhysicsBody(PhysicsWorld *world,
-                Vector2 position,
-                ColliderShape const &shape,
-                int type,
-                luabridge::LuaRef contactBeginCallback,
-                luabridge::LuaRef contactEndCallback,
-                luabridge::LuaRef data) : m_world(world),
-                                          m_contactBeginCallback(contactBeginCallback),
-                                          m_contactEndCallback(contactEndCallback),
-                                          m_data(data)
+    enum class Type : int32_t
     {
-        b2BodyDef bodyDef;
-        bodyDef.type = (b2BodyType)type;
-        bodyDef.position.Set(position.x / PHYSICS_SCALE, position.y / PHYSICS_SCALE);
-        m_body = m_world->getWorld()->CreateBody(&bodyDef);
+        Static = b2BodyType::b2_staticBody,
+        Kinematic = b2BodyType::b2_kinematicBody,
+        Dynamic = b2BodyType::b2_dynamicBody
+    };
 
-        m_body->CreateFixture(shape.getFixtureDef());
-        m_body->SetUserData(this);
-    }
+    /// @brief Creates physics body object
+    /// @param position Where will the body be spawned
+    /// @param shape Shape of the body
+    /// @param type Type of the body. See PhysicsBody::Type enum
+    /// @param contactBeginCallback Lua function that will be called when this body collides
+    /// @param contactEndCallback Lua function that will be called when this body ends collision
+    /// @param data Any user data that might need to stored. For example: reference to object that owns the body
+    PhysicsBody(PhysicsWorld *world, Vector2 position, ColliderShape const &shape, int32_t type, luabridge::LuaRef contactBeginCallback, luabridge::LuaRef contactEndCallback, luabridge::LuaRef data);
 
     /// @brief Get current location of the body in the physics world
     /// @return current location
@@ -48,17 +46,16 @@ public:
     void EndContact(PhysicsBody *other);
 
     /// @brief Sets body to inactive
-    void setIsActive(bool active)
-    {
-        m_body->SetActive(active);
-    }
+    void setIsActive(bool active);
 
-    bool getIsActive() const { return m_body->IsActive(); }
+    bool getIsActive() const { return m_active; }
 
-    ~PhysicsBody()
-    {
-        m_world->getWorld()->DestroyBody(m_body);
-    }
+    b2Body *getBody() { return m_body; }
+
+    /// @brief Apply updated values to the body. This function assumes does nothing if it's called when world is locked
+    void update();
+
+    ~PhysicsBody();
 
     static void bindLua(lua_State *state);
 
@@ -68,4 +65,5 @@ private:
     luabridge::LuaRef m_contactBeginCallback;
     luabridge::LuaRef m_contactEndCallback;
     luabridge::LuaRef m_data;
+    bool m_active = true;
 };
