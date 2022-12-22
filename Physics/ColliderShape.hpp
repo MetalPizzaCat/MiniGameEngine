@@ -1,6 +1,5 @@
 #pragma once
 #include <Box2D/Box2D.h>
-#include "PhysicsWorld.hpp"
 #include "../Lua/LuaMachine.hpp"
 
 /// @brief Base class for all collision shapes
