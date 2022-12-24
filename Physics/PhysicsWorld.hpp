@@ -79,12 +79,11 @@ public:
 
     /// @brief Creates a new body using PhysicsBody constructor and registers it into the world for update notification
     /// @param position Where will the body be spawned
-    /// @param shape Shape of the body
-    /// @param type Type of the body. See PhysicsBody::Type enum
+    /// @param bodyDef Body information
     /// @param contactBeginCallback Lua function that will be called when this body collides
     /// @param contactEndCallback Lua function that will be called when this body ends collision
     /// @param data Any user data that might need to stored. For example: reference to object that owns the body
-    PhysicsBody *createBody(Vector2 position, ColliderShape const &shape, int32_t type, luabridge::LuaRef contactBeginCallback, luabridge::LuaRef contactEndCallback, luabridge::LuaRef data);
+    PhysicsBody *createBody(Vector2 position, PhysicsBodyDefintion const& bodyDef, luabridge::LuaRef contactBeginCallback, luabridge::LuaRef contactEndCallback, luabridge::LuaRef data);
 
 private:
     /// @brief Performs destruction of all bodies marked as "dead"

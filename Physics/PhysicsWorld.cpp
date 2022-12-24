@@ -29,9 +29,9 @@ void PhysicsWorld::freeBodies()
     m_deadBodies.clear();
 }
 
-PhysicsBody *PhysicsWorld::createBody(Vector2 position, ColliderShape const &shape, int32_t type, luabridge::LuaRef contactBeginCallback, luabridge::LuaRef contactEndCallback, luabridge::LuaRef data)
+PhysicsBody *PhysicsWorld::createBody(Vector2 position, PhysicsBodyDefintion const &bodyDef, luabridge::LuaRef contactBeginCallback, luabridge::LuaRef contactEndCallback, luabridge::LuaRef data)
 {
-    PhysicsBody *body = new PhysicsBody(this, position, shape, type, contactBeginCallback, contactEndCallback, data);
+    PhysicsBody *body = new PhysicsBody(this, position, bodyDef, contactBeginCallback, contactEndCallback, data);
     m_bodies.push_back(body);
     return body;
 }

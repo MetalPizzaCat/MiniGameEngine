@@ -1,6 +1,21 @@
 #include "PhysicsBody.hpp"
 #include "PhysicsWorld.hpp"
 
+void PhysicsBodyDefintion::bindLua(lua_State *state)
+{
+    luabridge::getGlobalNamespace(state)
+        .beginNamespace("Physics")
+        .beginClass<PhysicsBodyDefintion>("BodyDef")
+        .addProperty("body_type", &PhysicsBodyDefintion::bodyType)
+        .addProperty("shape", &PhysicsBodyDefintion::shape)
+        .addProperty("is_sensor", &PhysicsBodyDefintion::isSensor)
+        .addProperty("collision_category", &PhysicsBodyDefintion::bodyCategory)
+        .addProperty("collision_mask", &PhysicsBodyDefintion::collisionMask)
+        .addConstructor<void (*)(uint8_t, ColliderShape const &, bool, uint16_t, uint16_t)>()
+        .endClass()
+        .endNamespace();
+}
+
 void PhysicsBody::bindLua(lua_State *state)
 {
     luabridge::getGlobalNamespace(state)
@@ -17,15 +32,19 @@ void PhysicsBody::bindLua(lua_State *state)
         .endNamespace();
 }
 
-PhysicsBody::PhysicsBody(PhysicsWorld *world, Vector2 position, ColliderShape const &shape, int32_t type, luabridge::LuaRef contactBeginCallback, luabridge::LuaRef contactEndCallback, luabridge::LuaRef data) : m_world(world),
-                                                                                                                                                                                                                  m_contactBeginCallback(contactBeginCallback), m_contactEndCallback(contactEndCallback), m_data(data)
+PhysicsBody::PhysicsBody(PhysicsWorld *world, Vector2 position, PhysicsBodyDefintion const &bodyDefInfo, luabridge::LuaRef contactBeginCallback, luabridge::LuaRef contactEndCallback, luabridge::LuaRef data) : m_world(world),
+                                                                                                                                                                                                                 m_contactBeginCallback(contactBeginCallback), m_contactEndCallback(contactEndCallback), m_data(data)
 {
     b2BodyDef bodyDef;
-    bodyDef.type = (b2BodyType)type;
+    bodyDef.type = (b2BodyType)bodyDefInfo.bodyType;
     bodyDef.position.Set(position.x / PHYSICS_SCALE, position.y / PHYSICS_SCALE);
     m_body = m_world->getWorld()->CreateBody(&bodyDef);
 
-    m_body->CreateFixture(shape.getFixtureDef());
+    b2FixtureDef fixture = *bodyDefInfo.shape.getFixtureDef();
+    fixture.filter.categoryBits = bodyDefInfo.bodyCategory;
+    fixture.filter.maskBits = bodyDefInfo.collisionMask;
+
+    m_body->CreateFixture(&fixture);
     m_body->SetUserData(this);
 }
 
