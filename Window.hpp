@@ -30,7 +30,7 @@ public:
     Window(int32_t width, int32_t height) : m_width(width),
                                             m_height(height),
                                             m_running(true),
-                                            m_world(Vector2(0, 9.8f), (b2ContactListener*)&m_collisionManager)
+                                            m_world(Vector2(0, 9.8f), (b2ContactListener *)&m_collisionManager)
 
     {
         m_window = SDL_CreateWindow("Nema-Video v0.0.1", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
@@ -57,6 +57,7 @@ public:
         }
         m_physicsDebug = new PhysicsDebugDraw(m_video);
         m_world.setDebugDraw(m_physicsDebug);
+        m_physicsDebug->SetFlags(b2Draw::e_shapeBit);
     }
 
     /// @brief Starts the game loop

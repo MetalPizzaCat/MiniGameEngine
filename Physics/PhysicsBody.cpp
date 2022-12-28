@@ -36,6 +36,7 @@ PhysicsBody::PhysicsBody(PhysicsWorld *world, Vector2 position, PhysicsBodyDefin
                                                                                                                                                                                                                  m_contactBeginCallback(contactBeginCallback), m_contactEndCallback(contactEndCallback), m_data(data)
 {
     b2BodyDef bodyDef;
+    bodyDef.enabled = true;
     bodyDef.type = (b2BodyType)bodyDefInfo.bodyType;
     bodyDef.position.Set(position.x / PHYSICS_SCALE, position.y / PHYSICS_SCALE);
     m_body = m_world->getWorld()->CreateBody(&bodyDef);

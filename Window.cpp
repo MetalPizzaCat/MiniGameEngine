@@ -138,6 +138,7 @@ void Window::run()
         handleEvents();
         clearScreen();
         updatePhysics();
+        m_world.getWorld()->DebugDraw();
         updateLua();
         render();
         SDL_framerateDelay(&m_fps);
