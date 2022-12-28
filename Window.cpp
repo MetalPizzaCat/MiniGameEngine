@@ -188,6 +188,7 @@ void Window::bindLuaObjects()
         .beginClass<Window>("Window")
         .addFunction("get_size", &Window::getWindowSize)
         .addFunction("set_size", &Window::setWindowSize)
+        .addFunction("get_mouse_position", &Window::getMousePosition)
         .endClass();
 
     Color::bindLua(m_lua->getState());

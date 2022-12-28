@@ -2,8 +2,8 @@
 
 void CollisionCallback::BeginContact(b2Contact *contact)
 {
-    void *mainBodyData = contact->GetFixtureA()->GetBody()->GetUserData();
-    void *otherBodyData = contact->GetFixtureB()->GetBody()->GetUserData();
+    void *mainBodyData = (void *)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
+    void *otherBodyData = (void *)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
     PhysicsBody *mainBody = nullptr;
     PhysicsBody *otherBody = nullptr;
     if (mainBodyData != nullptr)
@@ -26,8 +26,8 @@ void CollisionCallback::BeginContact(b2Contact *contact)
 
 void CollisionCallback::EndContact(b2Contact *contact)
 {
-    void *mainBodyData = contact->GetFixtureA()->GetBody()->GetUserData();
-    void *otherBodyData = contact->GetFixtureB()->GetBody()->GetUserData();
+     void *mainBodyData = (void *)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
+    void *otherBodyData = (void *)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
     PhysicsBody *mainBody = nullptr;
     PhysicsBody *otherBody = nullptr;
     if (mainBodyData != nullptr)

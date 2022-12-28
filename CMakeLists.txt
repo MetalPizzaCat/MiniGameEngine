@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.0.0)
 project(MiniGameEngine  VERSION 0.1.0)
 
 set(ENGINE_DEFAULT_FONT_NAME Roboto-Medium.ttf)
+#set(CMAKE_PREFIX_PATH /usr/local/lib/cmake/box2d)
 add_compile_definitions(DEFAULT_FONT_NAME="${ENGINE_DEFAULT_FONT_NAME}")
 # How big is the default font
 add_compile_definitions(DEFAULT_FONT_SIZE=32)
@@ -28,7 +29,7 @@ set( CMAKE_VERBOSE_MAKEFILE on )
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
-find_package(Box2D REQUIRED)
+find_package(box2d REQUIRED)
 
 include(CTest)
 enable_testing()
@@ -77,7 +78,7 @@ add_executable(MiniGameEngine
     Physics/CollisionCallback.cpp
     )
 
-target_link_libraries(MiniGameEngine  PRIVATE LuaBridge SDL2_image SDL2_ttf SDL2_gfx lua dl fmt::fmt Box2D ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+target_link_libraries(MiniGameEngine  PRIVATE LuaBridge SDL2_image SDL2_ttf SDL2_gfx lua dl fmt::fmt box2d ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

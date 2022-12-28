@@ -17,6 +17,7 @@ void Input::setInputState(SDL_Keysym key, bool state)
     m_virtualKeys[key.sym] = state;
 }
 
+
 void LuaBind::bindKeys(lua_State *state)
 {
     luabridge::push(state, (int32_t)SDL_SCANCODE_UP);

@@ -1,5 +1,5 @@
 #pragma once
-#include <Box2D/Box2D.h>
+#include <box2d/box2d.h>
 #include <memory>
 #include "../Graphics/Vector.hpp"
 #include "../Lua/LuaMachine.hpp"
@@ -54,7 +54,7 @@ public:
 
     /// @brief Call physics update fuctions
     /// @param timeStep physics update delta
-    void step(float32 timeStep);
+    void step(float timeStep);
 
     /// @brief Get Box2D world object
     /// @return Box2D world object

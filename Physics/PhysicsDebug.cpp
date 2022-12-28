@@ -20,11 +20,11 @@ void PhysicsDebugDraw::DrawSolidPolygon(const b2Vec2 *vertices, int32 vertexCoun
     }
     m_graphics->drawPolygon(points, Color(color.r, color.g, color.b));
 }
-void PhysicsDebugDraw::DrawCircle(const b2Vec2 &center, float32 radius, const b2Color &color)
+void PhysicsDebugDraw::DrawCircle(const b2Vec2 &center, float radius, const b2Color &color)
 {
     m_graphics->drawCircle(Vector2(center.x - radius / 2.f, center.y - radius / 2.f), (int32_t)radius, Color(color.r, color.g, color.b));
 }
-void PhysicsDebugDraw::DrawSolidCircle(const b2Vec2 &center, float32 radius, const b2Vec2 &axis, const b2Color &color)
+void PhysicsDebugDraw::DrawSolidCircle(const b2Vec2 &center, float radius, const b2Vec2 &axis, const b2Color &color)
 {
     m_graphics->drawCircle(Vector2(center.x - radius / 2.f, center.y - radius / 2.f), (int32_t)radius, Color(color.r, color.g, color.b));
 }
@@ -32,6 +32,12 @@ void PhysicsDebugDraw::DrawSegment(const b2Vec2 &p1, const b2Vec2 &p2, const b2C
 {
     m_graphics->drawLine(Vector2(p1.x, p1.y), Vector2(p2.x, p2.y), Color(color.r, color.g, color.b));
 }
+
+void PhysicsDebugDraw::DrawPoint(const b2Vec2 &p, float size, const b2Color &color)
+{
+    m_graphics->drawCircle(Vector2(p.x - size / 2.f, p.y - size / 2.f), (int32_t)size, Color(color.r, color.g, color.b));
+}
+
 void PhysicsDebugDraw::DrawTransform(const b2Transform &xf)
 {
 }

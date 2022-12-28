@@ -45,7 +45,7 @@ PhysicsBody::PhysicsBody(PhysicsWorld *world, Vector2 position, PhysicsBodyDefin
     fixture.filter.maskBits = bodyDefInfo.collisionMask;
 
     m_body->CreateFixture(&fixture);
-    m_body->SetUserData(this);
+    m_body->GetUserData().pointer = (uintptr_t)this;
 }
 
 PhysicsBody::~PhysicsBody()
@@ -80,9 +80,9 @@ void PhysicsBody::setVelocity(Vector2 const &velocity)
 
 void PhysicsBody::update()
 {
-    if (m_body->IsActive() != m_active)
+    if (m_body->IsEnabled() != m_active)
     {
-        m_body->SetActive(m_active);
+        m_body->SetEnabled(m_active);
     }
 }
 

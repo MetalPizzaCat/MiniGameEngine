@@ -46,7 +46,7 @@ void PhysicsWorld::destroyBody(PhysicsBody *body)
     }
 }
 
-void PhysicsWorld::step(float32 timeStep)
+void PhysicsWorld::step(float timeStep)
 {
     m_world->Step(timeStep, m_velocityIterCount, m_positionIterCount);
     freeBodies();
